@@ -1,0 +1,213 @@
+/* ===============================
+   PARFUME DETAIL PAGE
+   ATH FUMÉ
+================================ */
+
+.product-detail {
+    padding: 120px 120px 140px;
+    background: #fafafa;
+}
+
+/* GRID */
+.product-grid {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    align-items: center;
+}
+
+/* ===============================
+   IMAGE SLIDER + FRAME
+================================ */
+
+.product-image-slider {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    padding: 14px;                 /* RUANG UNTUK FRAME */
+    border: 1px solid rgba(0,0,0,0.15); /* GARIS KOTAK TIPIS */
+    overflow: hidden;
+    background: #fff;
+}
+
+.product-image-slider img {
+    width: 100%;
+    display: block;
+    transition: transform 0.5s ease, opacity 0.4s ease;
+}
+
+/* ARROWS */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(0,0,0,0.2);
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.nav-arrow.left {
+    left: 20px;
+}
+
+.nav-arrow.right {
+    right: 20px;
+}
+
+.nav-arrow:hover {
+    background: #111;
+    color: #fff;
+}
+
+/* ===============================
+   SLIDE ANIMATION
+================================ */
+
+.slide-left {
+    animation: slideLeft 0.5s ease;
+}
+
+.slide-right {
+    animation: slideRight 0.5s ease;
+}
+
+@keyframes slideLeft {
+    from {
+        transform: translateX(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideRight {
+    from {
+        transform: translateX(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ===============================
+   PRODUCT INFO
+================================ */
+
+.product-info h1 {
+    font-size: 36px;
+    letter-spacing: 6px;
+    margin-bottom: 14px;
+}
+
+.product-tag {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #777;
+    display: block;
+    margin-bottom: 30px;
+}
+
+.product-desc {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #555;
+    margin-bottom: 36px;
+}
+
+/* NOTES */
+.product-notes p {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.product-notes strong {
+    font-weight: 500;
+}
+
+/* PRICE */
+.product-price {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 40px 0 30px;
+}
+
+/* BUTTON */
+.product-btn {
+    padding: 14px 40px;
+    border: 1px solid #111;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+}
+
+.product-btn:hover {
+    background: #111;
+    color: #fff;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+    .product-detail {
+        padding: 90px 40px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 70px;
+        text-align: center;
+    }
+
+    .product-image-slider {
+        margin: auto;
+    }
+
+    .nav-arrow.left {
+        left: 16px;
+    }
+
+    .nav-arrow.right {
+        right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-info h1 {
+        font-size: 28px;
+        letter-spacing: 4px;
+    }
+}
+/* ===============================
+   CURSOR FOLLOW ZOOM (STRONG)
+================================ */
+
+.product-image-slider {
+    overflow: hidden;
+    cursor: zoom-in;
+}
+
+.product-image-slider img {
+    transform-origin: center;
+    transition: transform 0.15s ease-out; /* lebih responsif */
+    will-change: transform;
+}
+

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart – IARH FUMÉ</title>
+
+    <!-- GLOBAL CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- CART CSS -->
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo"> IARH FUMÉ</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#collection">Collection</a>
+        <a href="#contact">Contact</a>
+        <button class="cart-btn">
+            <img src="img/cart.png" alt="Cart" class="cart-icon">
+        </button>
+    </nav>
+</header>
+
+<!-- CART CONTENT -->
+<section class="cart-section">
+    <div class="cart-container">
+        <h1>Your Cart</h1>
+
+        <div id="cartItems" class="cart-items"></div>
+
+        <div id="emptyMessage" class="empty-cart">
+            Your cart is empty
+        </div>
+
+        <div class="cart-summary" id="cartSummary">
+            <span>Total</span>
+            <span id="cartTotal">Rp 0</span>
+        </div>
+
+        <button id="checkoutBtn" class="checkout-btn" onclick="goToCheckout()">
+            Checkout
+        </button>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-saff" id="contact">
+    <div class="footer-line"></div>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>ABOUT US</h4>
+            <p class="footer-about">
+                IARH FUMÉ is an independent fragrance house exploring
+                modern perfumery through balance, character, and
+                understated luxury.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>SOCIAL</h4>
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="#">X</a>
+        </div>
+        <div class="footer-col">
+            <h4>FAQ</h4>
+            <a href="#">Shipping</a>
+            <a href="#">Returns</a>
+            <a href="#">Product Care</a>
+        </div>
+        <div class="footer-col">
+            <h4>CONTACT</h4>
+            <p>
+                Customer Service<br>
+                <a href="mailto:cs@athfume.com">cs@iarhfume.com</a>
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2026 IARH FUMÉ
+    </div>
+</footer>
+
+<!-- CART SCRIPT -->
+<script>
+const cartItemsContainer = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
+const emptyMessage = document.getElementById("emptyMessage");
+const cartSummary = document.getElementById("cartSummary");
+const checkoutBtn = document.getElementById("checkoutBtn");
+
+function renderCart() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cartItemsContainer.innerHTML = "";
+
+    if (cart.length === 0) {
+        emptyMessage.style.display = "block";
+        cartSummary.style.display = "none";
+        checkoutBtn.style.display = "none";
+        return;
+    }
+
+    emptyMessage.style.display = "none";
+    cartSummary.style.display = "flex";
+    checkoutBtn.style.display = "block";
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        total += item.price * item.qty;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "cart-item";
+
+        itemDiv.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-info">
+                <h3>${item.name}</h3>
+                <p>Rp ${item.price.toLocaleString()}</p>
+                <div class="qty-control">
+                    <button onclick="decreaseQty(${index})">-</button>
+                    <span>${item.qty}</span>
+                    <button onclick="increaseQty(${index})">+</button>
+                </div>
+            </div>
+            <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
+        `;
+
+        cartItemsContainer.appendChild(itemDiv);
+    });
+
+    cartTotal.textContent = `Rp ${total.toLocaleString()}`;
+}
+
+function increaseQty(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart[index].qty += 1;
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function decreaseQty(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart[index].qty > 1) {
+        cart[index].qty -= 1;
+    } else {
+        cart.splice(index, 1);
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function removeItem(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function goToCheckout() {
+    window.location.href = "checkout.html";
+}
+
+renderCart();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>IARH FUMÉ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR DENGAN HAMBURGER MENU & EFEK FADE -->
+<header class="navbar">
+    <!-- Ikon Hamburger (Hanya muncul di HP) -->
+    <div class="menu-toggle" id="mobile-menu" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
+    <div class="logo">IARH FUMÉ</div>
+    
+    <nav class="nav-links" id="nav-links">
+        <a href="#">Home</a>
+        <a href="#collection">Collection</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <a href="cart.html" class="cart-btn">
+        <img src="img/cart.png" alt="Cart" class="cart-icon">
+        <span id="cartBadge" class="cart-badge">0</span> 
+    </a>
+</header>
+
+<!-- HERO SECTION DENGAN VIDEO BACKGROUND -->
+<section class="hero">
+    <!-- Background Video (berhenti saat selesai / tanpa loop) -->
+    <video autoplay muted playsinline class="hero-video">
+        <source src="background/backvideo.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Lapisan transparan agar teks tetap terbaca -->
+    <div class="hero-overlay"></div>
+
+    <!-- Konten Teks -->
+    <div class="hero-content">
+        <h1>IARH FUMÉ</h1>
+        <p>NATURAL LUXURY PERFUME</p>
+        <button onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})">
+            VIEW COLLECTION
+        </button>
+    </div>
+</section>
+
+<!-- FULL PARFUME SECTION (Semua Parfum Langsung Terlihat) -->
+<section class="collection" id="collection">
+
+    <!-- Black Steel -->
+    <a href="blacksteel.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p1 polos.png" class="img-main">
+                <img src="img/P1.png" class="img-hover">
+            </div>
+            <h3>Black Steel</h3>
+            <p>Woody · Earthy · Masculine</p>
+            <span>Rp 299.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Black Steel', 299000, 'img/p1 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Joopi -->
+    <a href="joopi.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p2 polos.png" class="img-main">
+                <img src="img/P2.png" class="img-hover">
+            </div>
+            <h3>Joopi</h3>
+            <p>Dark · Bold · Modern</p>
+            <span>Rp 349.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Joopi', 349000, 'img/p2 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Fragrance -->
+    <a href="fragrance.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p3 polos.png" class="img-main">
+                <img src="img/P3.png" class="img-hover">
+            </div>
+            <h3>Fragrance</h3>
+            <p>Soft Floral · Clean Elegance</p>
+            <span>Rp 299.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Fragrance', 299000, 'img/p3 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Caden -->
+    <a href="caden.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p4 polos.png" class="img-main">
+                <img src="img/p4.png" class="img-hover">
+            </div>
+            <h3>Caden</h3>
+            <p>Warm · Smooth · Elegant</p>
+            <span>Rp 399.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Caden', 399000, 'img/p4 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Tobak -->
+    <a href="tobak.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p5 polos.png" class="img-main">
+                <img src="img/p5.png" class="img-hover">
+            </div>
+            <h3>Tobak</h3>
+            <p>Warm · Creamy · Elegant</p>
+            <span>Rp 349.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Tobak', 349000, 'img/p5 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Vanilla Blooms -->
+    <a href="Vanilla blooms.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p6 polos.png" class="img-main">
+                <img src="img/p6.png" class="img-hover">
+            </div>
+            <h3>Vanilla Blooms</h3>
+            <p>Dark · Fresh · Mineral</p>
+            <span>Rp 289.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Vanilla Blooms', 289000, 'img/p6 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- La Tulipe -->
+    <a href="la-tulipe.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p7 polos.png" class="img-main">
+                <img src="img/p7.png" class="img-hover">
+            </div>
+            <h3>La Tulipe</h3>
+            <p>Floral · Clean · Soft</p>
+            <span>Rp 310.000</span>
+            <button class="add-cart-btn" onclick="addToCart('La Tulipe', 310000, 'img/p7 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Blank Me -->
+    <a href="blank-me.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p8 polos.png" class="img-main">
+                <img src="img/p8.png" class="img-hover">
+            </div>
+            <h3>Blank Me</h3>
+            <p>Soft · Fresh · Minimal</p>
+            <span>Rp 299.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Blank Me', 299000, 'img/p8 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Bassalt -->
+    <a href="bassalt.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p9 polos.png" class="img-main">
+                <img src="img/p9.png" class="img-hover">
+            </div>
+            <h3>Bassalt</h3>
+            <p>Mineral · Fresh · Deep</p>
+            <span>Rp 320.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Bassalt', 320000, 'img/p9 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Vela -->
+    <a href="vela.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p10 polos.png" class="img-main">
+                <img src="img/p10.png" class="img-hover">
+            </div>
+            <h3>Vela</h3>
+            <p>Warm · Bright · Smooth</p>
+            <span>Rp 399.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Vela', 399000, 'img/p10 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Tarim Rose -->
+    <a href="tarim.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p11 polos.png" class="img-main">
+                <img src="img/p11.png" class="img-hover">
+            </div>
+            <h3>Tarim Rose</h3>
+            <p>Floral · Soft · Clean</p>
+            <span>Rp 199.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Tarim Rose', 199000, 'img/p11 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Sadonaso -->
+    <a href="sadonaso.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p12 polos.png" class="img-main">
+                <img src="img/p12.png" class="img-hover">
+            </div>
+            <h3>Sadonaso</h3>
+            <p>Fresh · Clean · Modern</p>
+            <span>Rp 249.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Sadonaso', 249000, 'img/p12 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Dolke & Gabana -->
+    <a href="dolke.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p13 polos.png" class="img-main">
+                <img src="img/p13.png" class="img-hover">
+            </div>
+            <h3>Dolke & Gabana</h3>
+            <p>Lux · Bold · Elegant</p>
+            <span>Rp 499.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Dolke & Gabana', 499000, 'img/p13 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Dolce Travel Size -->
+    <a href="dolce.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p14 polos.png" class="img-main">
+                <img src="img/p14.png" class="img-hover">
+            </div>
+            <h3>Dolce Travel Size</h3>
+            <p>Sweet · Soft · Modern</p>
+            <span>Rp 259.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Dolce', 259000, 'img/p14 polos.png', event)">+</button>
+        </div>
+    </a>
+
+    <!-- Harmes -->
+    <a href="harmes.html" class="card-link">
+        <div class="card">
+            <div class="img-box">
+                <img src="img/p15 polos.png" class="img-main">
+                <img src="img/p15.png" class="img-hover">
+            </div>
+            <h3>Harmes</h3>
+            <p>Rich · Lux · Deep</p>
+            <span>Rp 899.000</span>
+            <button class="add-cart-btn" onclick="addToCart('Harmes', 899000, 'img/p15 polos.png', event)">+</button>
+        </div>
+    </a>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-saff" id="contact">
+    <div class="footer-line"></div>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>ABOUT US</h4>
+            <p class="footer-about">
+                IARH FUMÉ is an independent fragrance house exploring
+                modern perfumery through balance, character, and
+                understated luxury.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>SOCIAL</h4>
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="#">X</a>
+        </div>
+        <div class="footer-col">
+            <h4>FAQ</h4>
+            <a href="#">Shipping</a>
+            <a href="#">Returns</a>
+            <a href="#">Product Care</a>
+        </div>
+        <div class="footer-col">
+            <h4>CONTACT</h4>
+            <p>
+                Customer Service<br>
+                <a href="mailto:cs@iarhfume.com">cs@iarhfume.com</a>
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2026 IARH FUMÉ
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+    // 1. MOBILE MENU TOGGLE
+    function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        navLinks.classList.toggle('active');
+    }
+
+    // 2. CART BADGE LOGIC
+    function updateCartBadge() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const badge = document.getElementById("cartBadge");
+        if (!badge) return;
+        
+        const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+        if (totalItems > 0) {
+            badge.textContent = totalItems;
+            badge.classList.add("show");
+        } else {
+            badge.classList.remove("show");
+        }
+    }
+    document.addEventListener("DOMContentLoaded", updateCartBadge);
+
+    // 3. ADD TO CART ANIMATION
+    function addToCart(name, price, image, event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const item = cart.find(p => p.name === name);
+        if (item) item.qty += 1;
+        else cart.push({ name, price, image, qty: 1 });
+        
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartBadge();
+
+        const toast = document.createElement("div");
+        toast.textContent = `${name} added to cart!`;
+        
+        Object.assign(toast.style, {
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            background: "#111",
+            color: "#fff",
+            padding: "12px 18px",
+            borderRadius: "8px",
+            opacity: "0",
+            transform: "translateY(10px)",
+            transition: "all 0.4s ease",
+            zIndex: 9999,
+            fontSize: "13px"
+        });
+
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.style.opacity = "1";
+            toast.style.transform = "translateY(0)";
+        });
+
+        setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateY(10px)";
+            setTimeout(() => toast.remove(), 400);
+        }, 1500);
+    }
+</script>
+</body>
+</html>

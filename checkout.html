@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout – IARH FUMÉ</title>
+
+    <!-- GLOBAL CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- CHECKOUT CSS -->
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+
+<section class="checkout-section">
+    <div class="checkout-container">
+
+        <a href="cart.html" class="back-btn">← Back</a>
+
+        <h1>PAYMENT</h1>
+
+        <div class="checkout-grid">
+
+            <!-- LEFT : FORM PENGIRIMAN & PEMBAYARAN -->
+            <div class="checkout-box">
+                <h2>Shipping Information</h2>
+                <input type="text" id="inputName" placeholder="Full Name" required>
+                <input type="email" id="inputEmail" placeholder="Email Address">
+                <input type="tel" id="inputPhone" placeholder="Phone Number" required>
+                <textarea id="inputAddress" rows="4" placeholder="Shipping Address" required></textarea>
+
+                <h2 style="margin-top: 30px;">Payment Method</h2>
+                
+                <!-- Pilihan Pembayaran Utama -->
+                <div class="payment-grid">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="QRIS" onchange="showMainPayment('QRIS')">
+                        <div class="payment-card">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS">
+                            <span>QRIS</span>
+                        </div>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="Bank Transfer" onchange="showMainPayment('Bank')">
+                        <div class="payment-card">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="21" width="18" height="2"></rect>
+                                <path d="M4 17V9"></path><path d="M8 17V9"></path><path d="M12 17V9"></path><path d="M16 17V9"></path><path d="M20 17V9"></path>
+                                <polygon points="12 2 2 7 22 7"></polygon>
+                            </svg>
+                            <span>Bank Transfer</span>
+                        </div>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="COD" onchange="showMainPayment('COD')">
+                        <div class="payment-card">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="1" y="6" width="22" height="12" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                            <span>Bayar di Tempat (COD)</span>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Opsi Sub-Bank (Hanya Muncul Jika Bank Transfer Dipilih) -->
+                <div id="subBankSelection" style="display: none; margin-bottom: 20px;">
+                    <h3 style="font-size: 13px; color: #555; margin-bottom: 10px; text-transform: uppercase;">Pilih Bank</h3>
+                    <div class="payment-grid">
+                        <label class="payment-option">
+                            <input type="radio" name="sub_bank" value="BCA" onchange="showBankDetail('BCA')">
+                            <div class="payment-card">
+                                <img src="bank/BCA.webp" alt="BCA">
+                                <span>BCA</span>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="sub_bank" value="Mandiri" onchange="showBankDetail('Mandiri')">
+                            <div class="payment-card">
+                                <img src="bank/Mandiri.webp" alt="Mandiri">
+                                <span>Mandiri</span>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="sub_bank" value="BNI" onchange="showBankDetail('BNI')">
+                            <div class="payment-card">
+                                <img src="bank/BRI.png" alt="BNI">
+                                <span>BNI</span>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="sub_bank" value="BRI" onchange="showBankDetail('BRI')">
+                            <div class="payment-card">
+                                <img src="bank/BRI.png" alt="BRI">
+                                <span>BRI</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Kotak Detail Instruksi Dinamis -->
+                <div id="paymentDetails" class="payment-details-box">
+                    <!-- Konten akan diisi oleh JavaScript -->
+                </div>
+
+            </div>
+
+            <!-- RIGHT : SUMMARY -->
+            <div class="checkout-box">
+                <h2>Order Summary</h2>
+                <div id="summaryItems" class="summary-items"></div>
+                <div class="checkout-summary">
+                    <span>Total</span>
+                    <span id="checkoutTotal">Rp 0</span>
+                </div>
+                <button class="checkout-btn" onclick="placeOrder()">PLACE ORDER</button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- SCRIPT LOGIKA CHECKOUT -->
+<script>
+    const itemsBox = document.getElementById("summaryItems");
+    const totalBox = document.getElementById("checkoutTotal");
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let total = 0;
+
+    // Render Keranjang di Ringkasan
+    if (cart.length === 0) {
+        itemsBox.innerHTML = "<div class='empty-cart'>Your cart is empty</div>";
+    } else {
+        cart.forEach(item => {
+            total += item.price * item.qty;
+            const div = document.createElement("div");
+            div.className = "summary-item";
+            div.innerHTML = `
+                <span>${item.name} × ${item.qty}</span>
+                <span>Rp ${(item.price * item.qty).toLocaleString('id-ID')}</span>
+            `;
+            itemsBox.appendChild(div);
+        });
+    }
+
+    totalBox.textContent = "Rp " + total.toLocaleString('id-ID');
+
+    // Tampilkan Metode Pembayaran Utama
+    function showMainPayment(method) {
+        const detailBox = document.getElementById("paymentDetails");
+        const bankBox = document.getElementById("subBankSelection");
+        
+        detailBox.style.display = "none";
+        bankBox.style.display = "none";
+
+        // Reset pilihan bank jika user mengganti metode
+        const subBankRadios = document.querySelectorAll('input[name="sub_bank"]');
+        subBankRadios.forEach(radio => radio.checked = false);
+
+        if (method === "Bank") {
+            bankBox.style.display = "block";
+        } else {
+            detailBox.style.display = "block"; 
+            let content = "";
+
+            if (method === "QRIS") {
+                content = `
+                    <div class="qris-card">
+                        <div class="qris-header">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="qris-logo-white">
+                            <span class="qris-gpn">GPN</span>
+                        </div>
+                        <div class="qris-body">
+                            <div class="qris-merchant">IARH FUMÉ</div>
+                            <div class="qris-nmid">NMID: ID202610280011223</div>
+                            <div class="qris-qr-container">
+                                <!-- Ganti SRC ini dengan Barcode QRIS Asli Toko Anda -->
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR Code">
+                            </div>
+                            <div class="qris-instruction">
+                                Scan menggunakan aplikasi M-Banking atau E-Wallet pendukung
+                            </div>
+                        </div>
+                        <div class="qris-footer">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="GoPay">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/512px-Bank_Central_Asia.svg.png" alt="BCA">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/512px-BRI_2020.svg.png" alt="BRI">
+                        </div>
+                    </div>
+                `;
+            } else if (method === "COD") {
+                content = `
+                    <h4>Bayar di Tempat (COD)</h4>
+                    <p>Silakan siapkan uang tunai sejumlah <strong>Rp ${total.toLocaleString('id-ID')}</strong>.</p>
+                    <p>Pembayaran dilakukan langsung kepada kurir saat pesanan Anda tiba di alamat tujuan.</p>
+                `;
+            }
+            detailBox.innerHTML = content;
+        }
+    }
+
+    // Tampilkan Detail Sub-Bank
+    function showBankDetail(bank) {
+        const detailBox = document.getElementById("paymentDetails");
+        detailBox.style.display = "block";
+        let content = "";
+
+        if (bank === "BCA") {
+            content = `<h4>Transfer Bank BCA</h4><p>Silakan transfer ke nomor rekening berikut:</p><div class="account-number">873 123 4567</div><p><strong>A.N. IARH FUME</strong></p>`;
+        } else if (bank === "Mandiri") {
+            content = `<h4>Transfer Bank Mandiri</h4><p>Silakan transfer ke nomor rekening berikut:</p><div class="account-number">137 000 111 2222</div><p><strong>A.N. IARH FUME</strong></p>`;
+        } else if (bank === "BNI") {
+            content = `<h4>Transfer Bank BNI</h4><p>Silakan transfer ke nomor rekening berikut:</p><div class="account-number">098 765 4321</div><p><strong>A.N. IARH FUME</strong></p>`;
+        } else if (bank === "BRI") {
+            content = `<h4>Transfer Bank BRI</h4><p>Silakan transfer ke nomor rekening berikut:</p><div class="account-number">0011 2233 4455 667</div><p><strong>A.N. IARH FUME</strong></p>`;
+        }
+        detailBox.innerHTML = content;
+    }
+
+    // Proses Simpan Pesanan
+    function placeOrder() {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        const inputName = document.getElementById("inputName").value;
+        const inputAddress = document.getElementById("inputAddress").value;
+        const inputPhone = document.getElementById("inputPhone").value;
+        
+        if (!inputName || !inputAddress || !inputPhone) {
+            alert("Harap isi Nama, Nomor Telepon, dan Alamat Pengiriman!");
+            return;
+        }
+
+        const mainPayment = document.querySelector('input[name="payment"]:checked');
+        if (!mainPayment) {
+            alert("Harap pilih metode pembayaran utama!");
+            return;
+        }
+
+        let finalPaymentMethod = mainPayment.value;
+
+        if (finalPaymentMethod === "Bank Transfer") {
+            const subBank = document.querySelector('input[name="sub_bank"]:checked');
+            if (!subBank) {
+                alert("Harap pilih bank tujuan (BCA, Mandiri, BNI, atau BRI)!");
+                return;
+            }
+            finalPaymentMethod = "Bank Transfer (" + subBank.value + ")";
+        }
+
+        const orderData = {
+            orderId: "INV-" + Math.floor(Math.random() * 1000000),
+            date: new Date().toLocaleDateString('id-ID'),
+            name: inputName,
+            phone: inputPhone,
+            address: inputAddress,
+            paymentMethod: finalPaymentMethod,
+            items: cart,
+            total: total
+        };
+
+        // Simpan ke memory dan pindah ke halaman invoice
+        localStorage.setItem("latestOrder", JSON.stringify(orderData));
+        localStorage.removeItem("cart");
+        window.location.href = "invoice.html";
+    }
+</script>
+
+</body>
+</html>

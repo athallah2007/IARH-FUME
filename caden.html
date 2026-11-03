@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Caden – IARH FUMÉ</title>
+
+    <!-- GLOBAL CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- PARFUME DETAIL CSS -->
+    <link rel="stylesheet" href="parfume.css">
+</head>
+<body>
+
+<!-- NAVBAR DENGAN HAMBURGER MENU & EFEK FADE (SAMA DENGAN HOME) -->
+<header class="navbar">
+    <div class="menu-toggle" id="mobile-menu" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
+    <div class="logo">IARH FUMÉ</div>
+    
+    <nav class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#collection">Collection</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <a href="cart.html" class="cart-btn">
+        <img src="img/cart.png" alt="Cart" class="cart-icon">
+        <span id="cartBadge" class="cart-badge">0</span> 
+    </a>
+</header>
+
+<!-- PRODUCT DETAIL -->
+<section class="product-detail">
+    <div class="product-grid">
+
+        <!-- IMAGE SLIDER -->
+        <div class="product-image-slider">
+            <button class="nav-arrow left" onclick="prevImage()">&#10094;</button>
+            <img id="sliderImage" src="img/p4 polos.png" alt="Caden">
+            <button class="nav-arrow right" onclick="nextImage()">&#10095;</button>
+        </div>
+
+        <!-- PRODUCT INFO -->
+        <div class="product-info">
+            <h1>CADEN</h1>
+            <span class="product-tag">Warm · Smooth · Elegant</span>
+
+            <p class="product-desc">
+                Caden adalah aroma hangat yang halus dan elegan dengan perpaduan amber, vanilla lembut,
+                dan sentuhan kayu yang creamy. Aromanya memberikan kesan mewah, dewasa, dan menenangkan—
+                cocok dipakai siang maupun malam.
+            </p>
+
+            <div class="product-notes">
+                <p><strong>Top</strong> — Soft Citrus, Warm Spice</p>
+                <p><strong>Heart</strong> — Creamy Vanilla, Smooth Amber</p>
+                <p><strong>Base</strong> — Woody Musk, Deep Warm Notes</p>
+            </div>
+
+            <span class="product-price">Rp 399.000</span>
+
+            <!-- FUNGSI ONCLICK DISAMAKAN -->
+            <button class="product-btn" onclick="addToCart('Caden', 399000, 'img/p4 polos.png', event)">
+                Add to Cart
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-saff" id="contact">
+    <div class="footer-line"></div>
+
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>ABOUT US</h4>
+            <p class="footer-about">
+                IARH FUMÉ is an independent fragrance house exploring
+                modern perfumery through balance, character, and understated luxury.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4>SOCIAL</h4>
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="#">X</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>FAQ</h4>
+            <a href="#">Shipping</a>
+            <a href="#">Returns</a>
+            <a href="#">Product Care</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>CONTACT</h4>
+            <p>
+                Customer Service<br>
+                <a href="mailto:cs@iarhfume.com">cs@iarhfume.com</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 IARH FUMÉ
+    </div>
+</footer>
+
+<!-- IMAGE SLIDER SCRIPT -->
+<script>
+const images = [
+    "img/p4 polos.png",
+    "img/p4.png"
+];
+
+let currentIndex = 0;
+const sliderImage = document.getElementById("sliderImage");
+const sliderBox = document.querySelector(".product-image-slider");
+
+function showImage(index, direction) {
+    sliderImage.classList.remove("slide-left", "slide-right");
+    void sliderImage.offsetWidth;
+    sliderImage.src = images[index];
+    sliderImage.classList.add(direction);
+}
+
+function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage(currentIndex, "slide-left");
+}
+
+function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage(currentIndex, "slide-right");
+}
+
+sliderBox.addEventListener("mousemove", (e) => {
+    const rect = sliderBox.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    sliderImage.style.transformOrigin = `${x}% ${y}%`;
+    sliderImage.style.transform = "scale(1.8)";
+});
+
+sliderBox.addEventListener("mouseleave", () => {
+    sliderImage.style.transformOrigin = "center";
+    sliderImage.style.transform = "scale(1)";
+});
+</script>
+
+<!-- SCRIPT ADD TO CART & BADGE (Disamakan dengan Bassalt) -->
+<script>
+function updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const badge = document.getElementById("cartBadge");
+    
+    if (!badge) return;
+
+    const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+
+    if (totalItems > 0) {
+        badge.textContent = totalItems;
+        badge.classList.add("show");
+    } else {
+        badge.classList.remove("show");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", updateCartBadge);
+
+function addToCart(name, price, image, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const item = cart.find(p => p.name === name);
+
+    if (item) item.qty += 1;
+    else cart.push({ name, price, image, qty: 1 });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    updateCartBadge();
+
+    const toast = document.createElement("div");
+    toast.textContent = `${name} added to cart!`;
+
+    Object.assign(toast.style, {
+        position: "fixed",
+        bottom: "20px",
+        right: "20px",
+        background: "#111",
+        color: "#fff",
+        padding: "12px 18px",
+        borderRadius: "8px",
+        opacity: "0",
+        transform: "translateY(10px)",
+        transition: "all 0.4s ease",
+        zIndex: 9999,
+        fontSize: "13px"
+    });
+
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.style.opacity = "1";
+        toast.style.transform = "translateY(0)";
+    });
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(10px)";
+        setTimeout(() => toast.remove(), 400);
+    }, 1500);
+}
+</script>
+
+</body>
+</html>

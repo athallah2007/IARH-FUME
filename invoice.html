@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice – IARH FUMÉ</title>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Library untuk langsung merubah HTML ke File PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fafafa;
+            color: #111;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        /* Area Tombol (Diluar area PDF) */
+        .action-container {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: inherit;
+        }
+        .btn-dark {
+            background: #111;
+            color: #fff;
+            border: 1px solid #111;
+        }
+        .btn-dark:hover { background: #333; }
+        .btn-light {
+            background: transparent;
+            color: #111;
+            border: 1px solid #ccc;
+        }
+        .btn-light:hover { background: #eee; }
+
+        /* AREA INVOICE UTAMA YANG AKAN DI-DOWNLOAD */
+        .invoice-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 70px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #eaeaea;
+        }
+
+        /* Header Minimalis */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid #111;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            letter-spacing: 4px;
+            margin: 0 0 5px 0;
+            font-weight: 600;
+        }
+        .header-left p { margin: 0; font-size: 12px; color: #888; letter-spacing: 1px; }
+        .header-right { text-align: right; }
+        .header-right h2 { font-size: 16px; margin: 0 0 4px 0; letter-spacing: 2px; color: #111;}
+        .header-right p { margin: 0; font-size: 13px; color: #555; }
+
+        /* Detail Pesanan & Pengiriman */
+        .details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+        .details-col h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        .details-col p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Tabel Super Bersih */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        .table th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-weight: 500;
+        }
+        .table td {
+            padding: 16px 0;
+            border-bottom: 1px solid #fafafa;
+            font-size: 14px;
+            color: #111;
+        }
+        .text-right { text-align: right !important; }
+        .text-center { text-align: center !important; }
+
+        /* Total Section */
+        .total-section {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .total-box { width: 280px; }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .total-row.final {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111;
+            border-top: 1px solid #111;
+            margin-top: 5px;
+            padding-top: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .invoice-wrapper { padding: 30px; }
+            .details { flex-direction: column; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOMBOL AKSI (Aman, tidak akan ikut masuk ke dalam file PDF) -->
+    <div class="action-container">
+        <a href="index.html" class="btn btn-light">Back to Home</a>
+        <button class="btn btn-dark" onclick="sendToWhatsApp()">Konfirmasi WhatsApp</button>
+        <button class="btn btn-dark" onclick="downloadPDF()">Download File PDF</button>
+    </div>
+
+    <!-- KONTEN INVOICE UTAMA -->
+    <div class="invoice-wrapper" id="invoice-content">
+        
+        <div class="header">
+            <div class="header-left">
+                <h1>IARH FUMÉ</h1>
+                <p>INDEPENDENT FRAGRANCE HOUSE</p>
+            </div>
+            <div class="header-right">
+                <h2>INVOICE</h2>
+                <p id="invId">INV-0000</p>
+            </div>
+        </div>
+
+        <div class="details">
+            <div class="details-col">
+                <h3>Billed To</h3>
+                <p>
+                    <strong id="invName">Nama</strong><br>
+                    <span id="invPhone">Nomor Telepon</span><br>
+                    <span id="invAddress">Alamat Lengkap</span>
+                </p>
+            </div>
+            <div class="details-col text-right">
+                <h3>Date</h3>
+                <p id="invDate">DD/MM/YYYY</p>
+                <h3 style="margin-top: 15px;">Status</h3>
+                <p><strong>UNPAID</strong></p>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Total</th>
+                </tr>
+            </thead>
+            <tbody id="invItems">
+                <!-- Data dari keranjang masuk kesini -->
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <div class="total-box">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span id="invSubtotal">Rp 0</span>
+                </div>
+                <div class="total-row">
+                    <span>Shipping</span>
+                    <span>Free</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total</span>
+                    <span id="invTotal">Rp 0</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. AMBIL DATA PESANAN DARI LOCAL STORAGE
+        const orderData = JSON.parse(localStorage.getItem("latestOrder"));
+
+        if (!orderData) {
+            alert("Tidak ada data pesanan.");
+            window.location.href = "index.html";
+        } else {
+            // Memasukkan data ke dalam HTML
+            document.getElementById("invName").textContent = orderData.name;
+            document.getElementById("invPhone").textContent = orderData.phone;
+            document.getElementById("invAddress").textContent = orderData.address;
+            document.getElementById("invId").textContent = orderData.orderId;
+            document.getElementById("invDate").textContent = orderData.date;
+
+            const tbody = document.getElementById("invItems");
+            orderData.items.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>${item.name}</strong></td>
+                    <td class="text-center">${item.qty}</td>
+                    <td class="text-right">Rp ${item.price.toLocaleString('id-ID')}</td>
+                    <td class="text-right">Rp ${(item.price * item.qty).toLocaleString('id-ID')}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const totalFormatted = "Rp " + orderData.total.toLocaleString('id-ID');
+            document.getElementById("invSubtotal").textContent = totalFormatted;
+            document.getElementById("invTotal").textContent = totalFormatted;
+        }
+
+        // 2. FUNGSI DOWNLOAD FILE PDF LANGSUNG
+        function downloadPDF() {
+            // Ambil elemen khusus id invoice-content (tombol tidak akan ikut tersimpan)
+            const element = document.getElementById('invoice-content');
+            
+            // Pengaturan nama file dan kualitas
+            const opt = {
+                margin:       0.5,
+                filename:     `Invoice_IARH_FUME_${orderData.orderId}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Proses download file
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // 3. FUNGSI KONFIRMASI WHATSAPP
+        function sendToWhatsApp() {
+            const phone = "6281234567890"; // GANTI DENGAN NOMOR WA TOKO ANDA
+            let text = `Halo IARH FUMÉ, saya ingin konfirmasi pesanan:\n\n`;
+            text += `*Order ID:* ${orderData.orderId}\n`;
+            text += `*Nama:* ${orderData.name}\n`;
+            text += `*Total Pembayaran:* Rp ${orderData.total.toLocaleString('id-ID')}\n\n`;
+            text += `Mohon instruksi pembayarannya. Terima kasih.`;
+            
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
+        }
+    </script>
+</body>
+</html>

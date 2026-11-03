@@ -1,0 +1,461 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+/* =======================================
+   GLOBAL & SMOOTH SCROLLING
+======================================= */
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: #fafafa;
+    color: #111;
+}
+
+/* =======================================
+   NAVBAR & HAMBURGER MENU (GLASSMORPHISM)
+======================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 60px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    
+    /* Efek Fade / Transparan (Glassmorphism) */
+    position: sticky;
+    top: 0;
+    background: rgba(250, 250, 250, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 1000;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.menu-toggle .bar {
+    width: 22px;
+    height: 2px;
+    background: #111;
+    transition: 0.3s ease;
+}
+
+.logo {
+    font-size: 20px;
+    letter-spacing: 4px;
+    font-weight: 500;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Mendorong menu tulisan agar merapat ke kanan (Desktop) */
+    margin-right: 15px; /* Jarak antara menu tulisan dan ikon keranjang */
+}
+
+.nav-links a {
+    margin-left: 32px;
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+    position: relative;
+    padding-bottom: 6px;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: #000;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* CART BUTTON & BADGE */
+.cart-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    position: relative;
+}
+
+.cart-btn:hover img {
+    filter: brightness(0) invert(1);
+}
+
+.cart-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background: #ED1C24;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cart-badge.show {
+    opacity: 1;
+}
+
+/* =======================================
+   HERO SECTION (VIDEO BACKGROUND)
+======================================= */
+.hero {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.65);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(to bottom, rgba(250,250,250,0), rgba(250,250,250,1));
+    z-index: 4;
+}
+
+.hero-content h1 {
+    font-size: 64px;
+    letter-spacing: 8px;
+    color: #111;
+}
+
+.hero-content p {
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin: 15px 0 35px;
+    color: #555;
+}
+
+.hero-content button {
+    padding: 12px 36px;
+    border: 1px solid #111;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #111;
+}
+
+.hero-content button:hover {
+    background: #111;
+    color: #fff;
+}
+
+/* =======================================
+   COLLECTION (KARTU PARFUM)
+======================================= */
+.collection {
+    padding: 80px 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 40px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 6px;
+    padding: 14px;
+    transition: all 0.35s ease;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+}
+
+.img-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 4px;
+    position: relative;
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.img-hover {
+    opacity: 0;
+}
+
+.card:hover .img-main {
+    opacity: 0;
+    transform: scale(1.05);
+}
+
+.card:hover .img-hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.card h3 {
+    font-size: 16px;
+    margin-top: 12px;
+    margin-bottom: 4px;
+}
+
+.card p {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 4px;
+}
+
+.card span {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.add-cart-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #111;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+}
+
+.add-cart-btn:hover {
+    transform: scale(1.15);
+}
+
+/* =======================================
+   FOOTER
+======================================= */
+.footer-saff {
+    background: #fafafa;
+    padding: 110px 60px 40px;
+}
+
+.footer-line {
+    width: 100%;
+    height: 1px;
+    background: rgba(0,0,0,0.12);
+    margin-bottom: 72px;
+}
+
+.footer-grid {
+    max-width: 1120px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 96px;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 16px;
+}
+
+.footer-col h4 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+
+.footer-about {
+    font-size: 13px;
+    line-height: 2;
+    color: #555;
+}
+
+.footer-col a {
+    font-size: 13px;
+    text-decoration: none;
+    color: #111;
+}
+
+.footer-col a:hover {
+    opacity: 0.55;
+}
+
+.footer-bottom {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    margin-top: 72px;
+}
+
+/* =======================================
+   RESPONSIVE MOBILE (HP)
+======================================= */
+@media (max-width: 768px) {
+    .collection {
+        padding: 40px 20px;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 25px;
+    }
+
+    .navbar {
+        padding: 20px 25px;
+        position: sticky;
+        top: 0;
+        background: rgba(250, 250, 250, 0.85); 
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        z-index: 1000;
+    }
+    
+    .menu-toggle {
+        display: flex; 
+    }
+
+    .logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 16px; 
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
+        max-height: 0; 
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+        z-index: 98;
+        margin-left: 0; /* Reset margin untuk HP */
+        margin-right: 0; /* Reset margin untuk HP */
+    }
+
+    .nav-links.active {
+        max-height: 250px;
+    }
+
+    .nav-links a {
+        margin: 15px 0; 
+        font-size: 15px;
+    }
+
+    .hero h1 {
+        font-size: 40px; 
+        letter-spacing: 4px;
+    }
+
+    .hero p {
+        font-size: 12px;
+    }
+
+    .footer-saff {
+        padding: 60px 30px 40px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .footer-about {
+        margin: auto;
+    }
+
+    .footer-line {
+        margin-bottom: 40px;
+    }
+    
+    .cart-section, 
+    .checkout-section, 
+    .product-detail {
+        padding: 60px 25px 80px; 
+    }
+}
